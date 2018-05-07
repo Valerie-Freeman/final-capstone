@@ -1,0 +1,134 @@
+{
+  "ranks": [
+    {
+      "title": "Crewman",
+      "min": 0,
+      "max": 99
+    },
+    {
+      "title": "Janitor",
+      "min": 100,
+      "max": 299
+    },
+    {
+      "title": "Porter",
+      "min": 300,
+      "max": 599
+    },
+    {
+      "title": "Custodian",
+      "min": 600,
+      "max": 999
+    },
+    {
+      "title": "Conservator",
+      "min": 1000,
+      "max": 1499
+    },
+    {
+      "title": "Steward",
+      "min": 1500,
+      "max": 2099
+    },
+    {
+      "title": "Caretaker",
+      "min": 2100,
+      "max": 2799
+    },
+    {
+      "title": "Superintendent",
+      "min": 2800,
+      "max": 3599
+    },
+    {
+      "title": "Curator",
+      "min": 3600,
+      "max": 4499
+    },
+    {
+      "title": "Overseer",
+      "min": 4500,
+      "max": 5999
+    },
+    {
+      "title": "Administrator",
+      "min": 6000,
+      "max": 7999
+    },
+    {
+      "title": "Keeper",
+      "min": 8000,
+      "max": 10999
+    },
+    {
+      "title": "Master",
+      "min": 11000,
+      "max": 14999
+    },
+    {
+      "title": "Ambassdor",
+      "min": 15000,
+      "max": 19999
+    },
+    {
+      "title": "President",
+      "min": 20000,
+      "max": 29999
+    },
+    {
+      "title": "Prestige I",
+      "min": 30000,
+      "max": 59999
+    },
+    {
+      "title": "Prestige II",
+      "min": 60000,
+      "max": 89999
+    },
+    {
+      "title": "Prestige III",
+      "min": 90000,
+      "max": 119999
+    },
+    {
+      "title": "Prestige IV",
+      "min": 120000,
+      "max": 149999
+    },
+    {
+      "title": "Prestige V",
+      "min": 150000,
+      "max": 179999
+    },
+    {
+      "title": "Prestige VI",
+      "min": 180000,
+      "max": 209999
+    },
+    {
+      "title": "Prestige VII",
+      "min": 210000,
+      "max": 239999
+    },
+    {
+      "title": "Prestige VIII",
+      "min": 240000,
+      "max": 269999
+    },
+    {
+      "title": "Prestige IX",
+      "min": 270000,
+      "max": 299999
+    },
+    {
+      "title": "Prestige X",
+      "min": 300000,
+      "max": 329999
+    },
+    {
+      "title": "Prestige Master",
+      "min": 330000,
+      "max": 360000
+    }
+  ]
+}

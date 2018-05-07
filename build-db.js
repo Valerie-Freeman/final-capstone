@@ -1,5 +1,6 @@
 'use strict';
-let models = require("./app/models");
+const models = require("./app/models");
+const { ranks } = require("./app/seeders/ranks");
 
 models.sequelize.sync({force: true})
   .then( () => {
@@ -9,6 +10,9 @@ models.sequelize.sync({force: true})
       email: "valerah7@email.com",
       password: "$2a$08$qeS.sXDmb0/3G6v1DeNlEevjQjLXByDtkcmmxlFkAlV9gAloYLG5a"
     });
+  })
+  .then(() => {
+    return models.Rank.bulkCreate(ranks);
   })
   .then( () => {
     process.exit();
