@@ -9,7 +9,18 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING
   }, { tableName: "users" });
   User.associate = function(models) {
-    // associations can be defined here
+    User.belongsToMany(models.Task, {
+      through: {
+        model: 'User_Task',
+        unique: false
+      },
+      constraints: false
+    });
+    User.belongsToMany(models.Household, {
+      through: {
+        model: 'Household_Member'
+      }
+    });
   };
   return User;
 };
