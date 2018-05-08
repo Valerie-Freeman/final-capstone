@@ -7,7 +7,7 @@
 		"build-db": "node build-db.js",
 		"sass": "node-sass public/sass/ -o public/css/",
 		"lint": "eslint --color **/*.js --ignore-pattern node_modules/",
-		"dev": "concurrently \"nodemon server.js\" \"rerun-script\""
+		"dev": "rerun-script"
 	},
 	"watches": {
 		"sass": [

@@ -7,7 +7,7 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const routes = require("./app/routes");
 
-// app.set('models', require("./app/models"));
+app.set('models', require("./app/models"));
 
 // handles all the requested files needed to send to the browser: index.html, css, and JS files.
 app.use(express.static(__dirname + "/public"));
