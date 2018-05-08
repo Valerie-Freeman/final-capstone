@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
 </head>
-<body ng-app="">
+<body ng-app="TaskApp">
+  <div ng-include="'partials/nav.html'"></div>
 
   <div ng-view></div>
 
@@ -18,8 +19,11 @@
   <!-- Application scripts -->
   <script src="app.js"></script>
   <!-- factories -->
-  
+  <script src="factories/AuthFactory.js"></script>
   <!-- controllers -->
-
+  <script src="controllers/WelcomeCtrl.js"></script>
+  <script src="controllers/RegisterCtrl.js"></script>
+  <script src="controllers/LoginCtrl.js"></script>
+  <script src="controllers/NavCtrl.js"></script>
 </body>
 </html>

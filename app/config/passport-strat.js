@@ -48,14 +48,16 @@ const RegistrationStrategy = new Strategy(
             email,
             password: userPassword,
             username: req.body.username,
+            name: req.body.name
           };
+        console.log('DATA', data); 
         // create() is a Sequelize method
         User.create(data).then(newUser => {
           if (!newUser) {
             return done(null, false);
           }
           if (newUser) {
-            // console.log("newUser", newUser);
+            console.log("newUser", newUser);
             return done(null, newUser);
           }
         });
@@ -69,11 +71,11 @@ const RegistrationStrategy = new Strategy(
 const LoginStrategy = new Strategy(
   {
     // by default, local strategy uses username and password, we will override with email
-    usernameField: "username",
+    usernameField: "email",
     passwordField: "password",
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
-  (req, username, password, done) => {
+  (req, email, password, done) => {
     User = req.app.get("models").User;
 
     const isValidPassword = (userpass, password) => {
@@ -83,7 +85,7 @@ const LoginStrategy = new Strategy(
       return bCrypt.compareSync(password, userpass);
     };
 
-    User.findOne({ where: { username } })
+    User.findOne({ where: { email } })
       .then(user => {
         console.log("username stuff", user);
 
@@ -93,7 +95,7 @@ const LoginStrategy = new Strategy(
               "Can't find a user with those credentials. Please try again"
           });
         }
-        if (req.body.username != user.username) {
+        if (req.body.email != user.email) {
           return done(null, false, {
             message: "Wrong username. Please try again"
           });
