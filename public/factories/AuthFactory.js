@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module("TaskApp").factory("AuthFactory", ($q, $http) => {
-  let authFact = {};
+  const authFact = {};
 
   authFact.createUser = (userObj) => {
     return $q((resolve, reject) => {

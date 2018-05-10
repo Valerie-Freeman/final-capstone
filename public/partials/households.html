@@ -1,0 +1,17 @@
+<div>{{message}}</div>
+
+<div class="household-container" ng-repeat="household in userHouseholds">
+  <div class="card household-card">
+    <div class="card-body">
+      {{household.title}}
+    </div>
+  </div>
+</div>
+
+<div class="household-container" ng-click="addNewHousehold()">
+  <div class="card add-new-card">
+    <div class="card-body">
+      Create new household...
+    </div>
+  </div>
+</div>

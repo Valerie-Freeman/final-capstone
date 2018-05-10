@@ -1,0 +1,20 @@
+<div>{{message}}</div>
+
+<form>
+  <div class="form-group">
+    <label for="title">Household Name</label>
+    <input ng-model="household.title" type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Appartment">
+  </div>
+  <div class="form-group">
+    <label for="image">Image URL</label>
+    <input ng-model="household.image" type="text" class="form-control" id="image" placeholder="paste an image url">
+  </div>
+  <button ng-click="createNewHousehold()" class="btn btn-warning">Create</button>
+</form>
+
+
+<div class="household-container" id="preview">
+  <div class="card household-card">
+    <img src={{household.image}}>
+  </div>
+</div>
