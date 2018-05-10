@@ -1,6 +1,7 @@
 'use strict';
 const models = require("./app/models");
 const { ranks } = require("./app/seeders/ranks");
+const { household_members } = require("./app/seeders/household_members");
 
 models.sequelize.sync({force: true})
   .then( () => {
@@ -13,6 +14,9 @@ models.sequelize.sync({force: true})
   })
   .then(() => {
     return models.Rank.bulkCreate(ranks);
+  })
+  .then(() => {
+    return models.Household_Member.bulkCreate(household_members);
   })
   .then( () => {
     process.exit();

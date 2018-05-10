@@ -9,17 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING
   }, { tableName: "users" });
   User.associate = function(models) {
-    User.belongsToMany(models.Task, {
-      through: {
-        model: 'User_Task',
-        unique: false
-      },
-      constraints: false
+    User.hasOne(models.User_Task, {
+      foreignKey: 'user_id'
     });
-    User.belongsToMany(models.Household, {
-      through: {
-        model: 'Household_Member'
-      }
+    User.hasOne(models.Household_Member, {
+      foreignKey: 'user_id'
     });
   };
   return User;

@@ -8,12 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.INTEGER
-      },
-      household_id: {
-        type: Sequelize.INTEGER
-      },
       isAdmin: {
         type: Sequelize.BOOLEAN
       },

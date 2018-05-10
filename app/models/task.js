@@ -9,12 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     is_new: DataTypes.BOOLEAN
   }, { tableName: "tasks" });
   Task.associate = function(models) {
-    Task.belongsToMany(models.User, {
-      through: {
-        model: 'User_Task',
-        unique: false
-      },
-      constraints: false
+    Task.hasOne(models.User_Task, {
+      foreignKey: 'task_id'
+    });
+    Task.belongsTo(models.Household, {
+      foreignKey: 'household_id'
     });
   };
   return Task;
