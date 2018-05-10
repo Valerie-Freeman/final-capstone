@@ -18,13 +18,11 @@ const RegistrationStrategy = new Strategy(
   },
   // arg2 callback, handle storing a user's details.
   (req, email, password, done) => {
-    console.log("local strat reg callback: password", password);
     User = req.app.get("models").User; // this is made possible by line 14 in app.js: app.set('models', require('./models'));
 
     // add our hashed password generating function inside the callback function
     const generateHash = password => {
       let hashedWord = bCrypt.hashSync(password, bCrypt.genSaltSync(8));
-      console.log('hashedWord', hashedWord );
 
       return hashedWord;
     };
@@ -87,7 +85,6 @@ const LoginStrategy = new Strategy(
 
     User.findOne({ where: { email } })
       .then(user => {
-        console.log("username stuff", user);
 
         if (!user) {
           return done(null, false, {
@@ -127,8 +124,6 @@ const LoginStrategy = new Strategy(
 //serialize. In this function, we will be saving the user id to the session in
 // req.session.passport.user
 passport.serializeUser((user, done) => {
-  console.log("hello, serialize", user);
-
   // This saves the whole user obj into the session cookie,
   // but typically you will see just user.id passed in.
   done(null, user);
@@ -137,9 +132,7 @@ passport.serializeUser((user, done) => {
 // deserialize user
 // We use Sequelize's findById to get the user. Then we use the Sequelize getter function, user.get(), to pass the user data to the 'done' function as an object, stripped of the sequelize instance methods, etc.
 passport.deserializeUser(({ id }, done) => {
-  console.log("user arg", id);
   User.findById(id).then(user => {
-    console.log("Found User in deserielize method", user.get());
     if (user) {
       done(null, user.get());
     } else {

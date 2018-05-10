@@ -1,7 +1,6 @@
 'use strict';
 
-module.exports.getUserHouseholds = (req, res, next) => {
-  console.log('getUserHouseholds called in server controller'); 
+module.exports.getUserHouseholds = (req, res, next) => { 
   const UserHousehold = req.app.get('models').Household_Member;
   const { Household } = req.app.get('models');
   let usersHouseholds = [];
@@ -13,7 +12,6 @@ module.exports.getUserHouseholds = (req, res, next) => {
     }]
   })
     .then(households => {
-      console.log('households in the .then in the server controller', households); 
       if(households !== null) {
         households.forEach(household => {
           usersHouseholds.push(household.Household);
@@ -24,23 +22,49 @@ module.exports.getUserHouseholds = (req, res, next) => {
       }
     })
     .catch(err => {
-      console.log('ERROR broadcasted in the server controller'); 
       next(err);
     });
 };
 
 module.exports.createHousehold = (req, res, next) => {
-  console.log("createHousehold called in server controller");
   const { Household } = req.app.get('models');
 
-  console.log('req.body', req.body ); 
-
   Household.create(req.body)
-    .then(data => {
-      console.log('WHAT HAPPENED??', data); 
-      res.status(201).end();
+    .then( ({ dataValues }) => {
+      console.log('WHAT HAPPENED??', dataValues); 
+      res.status(201).json(dataValues);
     })
     .catch(err => {
       next(err);
     });
+};
+
+module.exports.createHouseholdMember = (req, res, next) => {
+  console.log('create household member called in server controller'); 
+  const { Household_Member } = req.app.get('models');
+
+  console.log('There is no user_id attribute:', !req.body.user_id); 
+  
+  if(!req.body.user_id) {
+    Household_Member.create({
+      household_id: req.body.household_id,
+      user_id: req.user.id,
+      isAdmin: true
+    })
+      .then( ({ dataValues }) => {
+        console.log('WHAT HAPPENED?!', dataValues); 
+        res.status(201).json(dataValues);
+      })
+      .catch(err => {
+        next(err);
+      });
+  } else {
+    Household_Member.create({
+      household_id: req.body.household_id,
+      user_id: req.body.user_id,
+      isAdmin: false
+    });
+  }
+
+
 };

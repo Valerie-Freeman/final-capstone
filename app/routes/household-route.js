@@ -5,10 +5,12 @@ const router = Router();
 
 const {
   getUserHouseholds,
-  createHousehold
+  createHousehold,
+  createHouseholdMember
 } = require("../controllers/householdCtrl");
 
 router.get("/households", getUserHouseholds);
 router.post("/households", createHousehold);
+router.post("/householdmember", createHouseholdMember);
 
 module.exports = router;
