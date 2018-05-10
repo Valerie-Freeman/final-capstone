@@ -1,14 +1,11 @@
-<div class="navbar">
-  <div class="logo">
-    <h1>App</h1>
-  </div>
-  <div>
-    <a href="#!/register">Sign Up</a>
-  </div>
-  <div>
-    <a href="#!/login">Log In</a>
-  </div>
-  <div>
-    <a ng-click="logout()" href="#">Logout</a>
-  </div>
-</div>
+<nav ng-controller="NavCtrl" class="navbar navbar-expand navbar-light bg-light">
+    <a class="navbar-brand" href="#">App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="#!/register">Register</a>
+      <a class="nav-item nav-link" href="#!/login">Log in</a>
+      <a class="nav-item nav-link" ng-click="logout()">Logout</a>
+    </div>
+  </nav>

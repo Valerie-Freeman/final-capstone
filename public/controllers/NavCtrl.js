@@ -6,6 +6,7 @@ angular.module("TaskApp").controller("NavCtrl", function($scope, AuthFactory, $l
     AuthFactory.logout()
       .then(response => {
         console.log('Response', response); 
+        console.log('Hello?`'); 
         $location.path("/");
       })
       .catch(error => {

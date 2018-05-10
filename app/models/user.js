@@ -9,7 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING
   }, { tableName: "users" });
   User.associate = function(models) {
-    // associations can be defined here
+    User.hasOne(models.User_Task, {
+      foreignKey: 'user_id'
+    });
+    User.hasOne(models.Household_Member, {
+      foreignKey: 'user_id'
+    });
   };
   return User;
 };

@@ -15,5 +15,17 @@ angular.module("TaskApp", ["ngRoute"]).config($routeProvider => {
       templateUrl: "partials/login.html",
       controller: "LoginCtrl"
     })
+    .when('/households', {
+      templateUrl: "partials/households.html",
+      controller: "HouseholdsCtrl"
+    })
+    .when('/households/:id', {
+      templateUrl: "partials/taskList.html",
+      controller: "TaskListCtrl"
+    })
+    .when('/newhousehold', {
+      templateUrl: "partials/householdForm.html",
+      controller: "HouseholdFormCtrl"
+    })
     .otherwise('/');
 });
