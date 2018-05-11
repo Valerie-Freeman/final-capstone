@@ -1,0 +1,28 @@
+<h1>{{message}}</h1>
+
+<form>
+  <div class="form-group">
+    <label for="title">Task</label>
+    <input ng-model="task.title" type="text" class="form-control" id="title" placeholder="Wash Dishes">
+  </div>
+  <div class="form-group">
+    <label for="description">Task Description</label>
+    <input ng-model="task.description" type="text" class="form-control" id="description" placeholder="Describe task">
+  </div>
+  <div class="form-group">
+    <label for="value">Point value (1 - 20)</label>
+    <input ng-model="task.value" type="number" min="1" max="20" class="form-control" id="value">
+  </div>
+  <div class="form-group">
+    <label for="repeat">How often will you complete this task?</label>
+    <select ng-model="task.repeat" name="repeat">
+      <option ng-value="0" ng-selected="true">once</option>
+      <option ng-value="1">every day</option>
+      <option ng-value="2">every other day</option>
+      <option ng-value="7">once a week</option>
+      <option ng-value="30">once a month</option>
+    </select>
+  </div>
+  
+  <button ng-click="createNewTask()" class="btn btn-warning">Create</button>
+</form>
