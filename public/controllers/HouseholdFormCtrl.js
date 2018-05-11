@@ -18,5 +18,6 @@ angular.module("TaskApp").controller("HouseholdFormCtrl", function($scope, House
         console.log('error', error); 
       });
   };
+
 });
   

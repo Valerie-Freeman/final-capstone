@@ -32,6 +32,7 @@
 		"passport-local": "^1.0.0",
 		"pg": "^7.4.1",
 		"pg-hstore": "^2.3.2",
+		"popper.js": "^1.14.3",
 		"rerun-script": "^0.6.0",
 		"sequelize": "^4.37.6"
 	}

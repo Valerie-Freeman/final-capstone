@@ -63,7 +63,14 @@ module.exports.createHouseholdMember = (req, res, next) => {
       household_id: req.body.household_id,
       user_id: req.body.user_id,
       isAdmin: false
-    });
+    })
+      .then( ({ dataValues }) => {
+        console.log('WHAT HAPPENED?!', dataValues); 
+        res.status(201).json(dataValues);
+      })
+      .catch(err => {
+        next(err);
+      });
   }
 
 
