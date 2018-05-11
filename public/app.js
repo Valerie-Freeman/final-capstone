@@ -31,5 +31,9 @@ angular.module("TaskApp", ["ngRoute"]).config($routeProvider => {
       templateUrl: "partials/taskForm.html",
       controller: "TaskFormCtrl"
     })
+    .when('/task/:id', {
+      templateUrl: "partials/taskDetail.html",
+      controller: "TaskDetailCtrl"
+    })
     .otherwise('/');
 });

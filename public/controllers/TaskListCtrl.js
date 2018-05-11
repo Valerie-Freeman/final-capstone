@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routeParams, UserFactory, HouseholdFactory, $location) {
+angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routeParams, TaskFactory, UserFactory, HouseholdFactory, $location) {
   $scope.message = 'Hey, welcome to the task list of the household you clicked on';
   console.log('Route param', $routeParams.id); 
 
@@ -12,6 +12,15 @@ angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routePara
     .catch(error => {
       console.log('ERROR', error); 
     });
+  
+  TaskFactory.getTasks($routeParams.id)
+    .then(({data}) => {
+      console.log('Tasks:', data);
+      $scope.taskList = data; 
+    })
+    .catch(error => {
+      console.log('ERROR', error); 
+    }) ;
   
   $scope.addHouseholdMember = (memberId) => {
     console.log('What you chose:', memberId); 

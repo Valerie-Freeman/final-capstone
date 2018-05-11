@@ -48,14 +48,12 @@ const RegistrationStrategy = new Strategy(
             username: req.body.username,
             name: req.body.name
           };
-        console.log('DATA', data); 
         // create() is a Sequelize method
         User.create(data).then(newUser => {
           if (!newUser) {
             return done(null, false);
           }
           if (newUser) {
-            console.log("newUser", newUser);
             return done(null, newUser);
           }
         });
@@ -77,7 +75,6 @@ const LoginStrategy = new Strategy(
     User = req.app.get("models").User;
 
     const isValidPassword = (userpass, password) => {
-      console.log('isValidPassword', userpass, password);
 
       // hashes the passed-in password and then compares it to the hashed password fetched from the db
       return bCrypt.compareSync(password, userpass);

@@ -7,5 +7,9 @@ angular.module("TaskApp").factory("TaskFactory", $http => {
     return $http.post("/tasks", angular.toJson(task));
   };
 
+  taskFact.getTasks = (householdId) => {
+    return $http.get(`/tasks?household=${householdId}`);
+  };
+
   return taskFact;
 });

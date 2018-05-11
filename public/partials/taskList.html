@@ -12,6 +12,15 @@
 </div>
 
 <div id="task-list">
+  <a ng-repeat="task in taskList" href="#!/task/{{task.id}}">
+    <div class="household-container">
+      <div class="card household-card">
+        <div class="card-body">
+          {{task.title}}  ...{{task.value}}
+        </div>
+      </div>
+    </div>
+  </a>
 
   <div ng-click="toTaskForm()" class="task-container">
     <div class="card add-new-card">
