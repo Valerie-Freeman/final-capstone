@@ -46,3 +46,19 @@ module.exports.getOneTask = (req, res, next) => {
       next(err);
     });
 };
+
+module.exports.createUserTask = (req, res, next) => {
+  const { User_Task } = req.app.get('models');
+ 
+  User_Task.create({
+    user_id: req.user.id,
+    task_id: req.body.taskId
+  })
+    .then( ({ dataValues }) => {
+      console.log('dataValues', dataValues); 
+      res.json(dataValues);
+    })
+    .catch(err => {
+      next(err);
+    });
+};

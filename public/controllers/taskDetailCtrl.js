@@ -12,8 +12,10 @@ angular.module("TaskApp").controller("TaskDetailCtrl", function($scope, $routePa
     });
 
   $scope.complete = (taskId) => {
-    // TaskFactory.completeTask(taskId)
-    console.log('The task id', taskId); 
-    $location.path(`households/${$scope.task.household_id}`);
+    TaskFactory.completeTask(taskId)
+      .then( ({data}) => {
+        console.log('You completed a task', data); 
+        $location.path(`households/${$scope.task.household_id}`);
+      });
   };
 });

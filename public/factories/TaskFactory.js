@@ -12,8 +12,12 @@ angular.module("TaskApp").factory("TaskFactory", $http => {
   };
 
   taskFact.getOneTask = (taskId) => {
-    console.log('Called'); 
     return $http.get(`/task?task=${taskId}`);
+  };
+
+  taskFact.completeTask = (taskId) => {
+    console.log('factory called, what we got:', taskId); 
+    return $http.post('/usertask', angular.toJson({taskId}));
   };
 
   return taskFact;
