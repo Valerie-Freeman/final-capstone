@@ -13,6 +13,7 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
           taskList.push(task.dataValues);
         } else {
           // TODO: write helper function for getting all user tasks by task id
+          console.log(`${task.dataValues.title} has is_new set to ${task.dataValues.is_new}`); 
           console.log('Do the other stuff'); 
         }
       });
@@ -29,6 +30,21 @@ module.exports.createTask = (req, res, next) => {
   Task.create(req.body)
     .then( ({ dataValues }) => {
       res.status(201).json(dataValues);
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
+module.exports.updateTask = (req, res, next) => {
+  const { Task } = req.app.get('models');
+
+  Task.update(
+    { is_new: false },
+    { where: { id: req.body.taskId } }
+  )
+    .then( ({ dataValues }) => {
+      res.json(dataValues);
     })
     .catch(err => {
       next(err);
@@ -55,7 +71,6 @@ module.exports.createUserTask = (req, res, next) => {
     task_id: req.body.taskId
   })
     .then( ({ dataValues }) => {
-      console.log('dataValues', dataValues); 
       res.json(dataValues);
     })
     .catch(err => {

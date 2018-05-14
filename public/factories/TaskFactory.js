@@ -20,5 +20,10 @@ angular.module("TaskApp").factory("TaskFactory", $http => {
     return $http.post('/usertask', angular.toJson({taskId}));
   };
 
+  taskFact.updateTask = (taskId) => {
+    console.log('factory called, what we got:', taskId); 
+    return $http.patch('task', angular.toJson({taskId}));
+  };
+
   return taskFact;
 });
