@@ -12,51 +12,65 @@ let getUserTasksByUserId = (req, res, next, taskId) => {
   });
 };
 
+
 module.exports.getAllHouseholdTasks = (req, res, next) => {
   const { Task } = req.app.get('models');
-  let taskList = [];
+  let taskList = []; // This will be the array of current tasks sent to the client
+  let promArr = []; // This will be for getting the user_tasks of each task
 
+  // Get all all tasks created for the household
   Task.findAll({
     where: { household_id: req.query.household }
     // raw: true
   })
     .then(tasks => {
-      console.log('Tasks', tasks);
-      tasks.forEach(task => {
-        if (task.dataValues.is_new === true) {
+      tasks.forEach(task => { // Read all of the tasks to determine which tasks get sent to the client
+        if (task.dataValues.is_new === true) { // If the task is new, push it to the task array to be sent to the client
           taskList.push(task.dataValues);
-        } else if (task.dataValues.repeat !== 0) {
-          console.log('DOING SOME STUFF');
-          console.log(`Right now we are on ${task.dataValues.title} which has an id of ${task.dataValues.id}`);
-          getUserTasksByUserId(req, res, next, task.dataValues.id)
-            .then(userTasks => {
-              console.log('This is what we get:', userTasks);
-              let latest = null;
-              for (let i = 0; i < userTasks.length; i++) {
-                if (i === 0 || moment(userTasks[i].createdAt).isAfter(userTasks[i - 1])) {
-                  latest = userTasks[0];
-                }
-              }
-              console.log('This is the latest', latest);
-
-              // This is the day the task should reapear on the taskList
-              let displayDate = moment(latest).add(task.dataValues.repeat, 'days');
-
-              console.log('This should be true:', moment('2018-05-15').isSameOrAfter(displayDate, 'day'));
-
-              if (moment('2018-05-21').isSameOrAfter(displayDate, 'day')) {
-                console.log('Is it here?', task.dataValues);
-                taskList.push(task.dataValues);
-              }
-              return res.json(taskList);
-            });
+        } else if (task.dataValues.repeat !== 0) { // If the task is not new, but has been chosen to repeat 
+          promArr.push(
+            new Promise((resolve, reject) => {
+              getUserTasksByUserId(req, res, next, task.dataValues.id)
+                .then(userTasks => {
+                  let latest = null; // This will be the latest created user_task date
+                  // Find the latest date
+                  for (let i = 0; i < userTasks.length; i++) {
+                    if (i === 0 || moment(userTasks[i].createdAt).isAfter(userTasks[i - 1])) {
+                      latest = userTasks[0];
+                    }
+                  }
+                  let displayDate = moment(latest).add(task.dataValues.repeat, 'days'); // This is the day the task should reapear on the taskList
+                  // Check if current date is same or after the display date
+                  /***** Place a future fake date in here for testing *****/
+                  if (moment('2018-05-21').isSameOrAfter(displayDate, 'day')) {
+                    resolve(task.dataValues);
+                  } else {
+                    resolve(null);
+                  }
+                });
+            })
+          );
         }
       });
+      Promise.all(promArr)
+        .then(tasks => {
+          console.log('The tasks??', tasks); 
+          tasks.forEach(task => {
+            if(task !== null) {
+              taskList.push(task);
+            }
+          });
+          res.json(taskList);
+        })
+        .catch(message => {
+          console.log(message); 
+        });
     })
     .catch(err => {
       next(err);
     });
 };
+
 
 module.exports.createTask = (req, res, next) => {
   const { Task } = req.app.get('models');
@@ -69,6 +83,7 @@ module.exports.createTask = (req, res, next) => {
       next(err);
     });
 };
+
 
 module.exports.updateTask = (req, res, next) => {
   const { Task } = req.app.get('models');
@@ -85,6 +100,7 @@ module.exports.updateTask = (req, res, next) => {
     });
 };
 
+
 module.exports.getOneTask = (req, res, next) => {
   const { Task } = req.app.get('models');
 
@@ -96,6 +112,7 @@ module.exports.getOneTask = (req, res, next) => {
       next(err);
     });
 };
+
 
 module.exports.createUserTask = (req, res, next) => {
   const { User_Task } = req.app.get('models');
