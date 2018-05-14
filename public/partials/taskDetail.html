@@ -1,1 +1,10 @@
-<div>{{message}}</div>
+<h2>{{task.title}}</h2>
+
+<p>{{task.description}}</p>
+
+<p ng-show="task.repeat > 1">Repeat every {{task.repeat}} days.</p>
+<p ng-show="task.repeat === 1">Repeat every day</p>
+
+<p>Points: {{task.value}}</p>
+
+<button ng-click="complete(task.id)">Complete</button>

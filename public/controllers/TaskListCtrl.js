@@ -6,7 +6,6 @@ angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routePara
 
   UserFactory.getAllUsers()
     .then( ({ data }) => {
-      console.log('This is what we get back', data); 
       $scope.users = data;
     })
     .catch(error => {
@@ -15,7 +14,6 @@ angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routePara
   
   TaskFactory.getTasks($routeParams.id)
     .then(({data}) => {
-      console.log('Tasks:', data);
       $scope.taskList = data; 
     })
     .catch(error => {

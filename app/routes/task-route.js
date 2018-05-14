@@ -5,10 +5,12 @@ const router = Router();
 
 const {
   createTask,
-  getAllHouseholdTasks
+  getAllHouseholdTasks,
+  getOneTask
 } = require("../controllers/taskCtrl");
 
-router.post('/tasks', createTask);
-router.get('/tasks', getAllHouseholdTasks);
+router.post('/newtask', createTask);
+router.get('/householdtasks', getAllHouseholdTasks);
+router.get('/task', getOneTask);
 
 module.exports = router;

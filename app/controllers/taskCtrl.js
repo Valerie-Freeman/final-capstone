@@ -4,14 +4,11 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
   const { Task } = req.app.get('models');
   let taskList = [];
 
-  console.log('req.query.household', req.query.household); 
-
   Task.findAll({
     where: { household_id: req.query.household}
   })
     .then(tasks => {
       tasks.forEach(task => {
-        console.log('One task', task.dataValues);
         if(task.dataValues.is_new === true) {
           taskList.push(task.dataValues);
         } else {
@@ -32,6 +29,18 @@ module.exports.createTask = (req, res, next) => {
   Task.create(req.body)
     .then( ({ dataValues }) => {
       res.status(201).json(dataValues);
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
+module.exports.getOneTask = (req, res, next) => {
+  const { Task } = req.app.get('models'); 
+
+  Task.findById(req.query.task)
+    .then( ({ dataValues}) => {
+      res.json(dataValues);
     })
     .catch(err => {
       next(err);
