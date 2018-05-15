@@ -4,8 +4,9 @@ angular.module("TaskApp").controller("LeaderboardCtrl", function($scope, $routeP
   $scope.test = `this is the leaderboard page of household: ${$routeParams.householdId}`;
 
   StatFactory.getLeaderboardData($routeParams.householdId)
-    .then(({data}) => {
-      console.log('data', data); 
+    .then(({data}) => { 
+      $scope.leaderboardData = data;
+      console.log('The data', $scope.leaderboardData); 
     })
     .catch(error => {
       console.log('error', error); 

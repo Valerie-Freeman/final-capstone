@@ -121,8 +121,7 @@ module.exports.getCompletedTasks = ({app, query: { household }}, res, next) => {
     },
     raw: true
   })
-    .then(tasks => {
-      console.log('These are the completed tasks', tasks); 
+    .then(tasks => { 
       res.json(tasks);
     })
     .catch(err => {
@@ -188,59 +187,59 @@ module.exports.createUserTask = (req, res, next) => {
     });
 };
 
-// TODO: 
-// This is what I want in the member array: 
-// {
-//   username: cage,
-//   points: 206,
-//   rank: Custodian,
-//   level: 3,
-//   tasks: 23,
-//   is_current: false
-// },
-// {
-//   username: valerah7,
-//   points: 256,
-//   rank: Custodian,
-//   level: 3,
-//   tasks: 29,
-//   is_current: true
-// },
-
 
 module.exports.getLeaderboardData = (req, res, next) => {
   let promArr = [];
   getMembers(req, res, next, req.query.household)
     .then(members => {
-      console.log('Members', members); 
-      // res.json(members);
       members.forEach(member => {
         promArr.push(
           new Promise((resolve, reject) => {
             getUserTasksByUserId(req, res, next, member.user_id, req.query.household)
               .then(completedTasks => {
-                // console.log('This is what we get in the promise', member.user_id, completedTasks);
                 let points = 0;
                 let tasks = 0;
+                let title = null;
+                let level = 0;
                 let is_current = member.dataValues.user_id === req.user.id ? true : false;
+                let monthPoints = 0;
+                let monthTasks = 0;
+                // Add all points earned and tasks completed
                 completedTasks.forEach(completedTask => { 
                   tasks++;
                   points += completedTask.dataValues.Task.dataValues.value;
+                  // Get the points and tasks for the month
+                  if(moment().isSame(completedTask.dataValues.createdAt, 'month')) {
+                    monthPoints += completedTask.dataValues.Task.dataValues.value;
+                    monthTasks ++;
+                  }
                 });
-                resolve({
-                  username: member.dataValues.User.dataValues.username,
-                  points,
-                  tasks,
-                  is_current
-                });
+                getRanks(req, res, next)
+                  .then(ranks => { 
+                    ranks.forEach(rank => {
+                      if(points >= rank.min && points <= rank.max) {
+                        title = rank.title;
+                        level = rank.id;
+                      }
+                    });
+                    resolve({
+                      username: member.dataValues.User.dataValues.username,
+                      points,
+                      title,
+                      level,
+                      tasks,
+                      is_current,
+                      monthPoints,
+                      monthTasks
+                    });
+                  });
               });
           })
         );
       });
-      return Promise.all(promArr)
+      return Promise.all(promArr);
     })
     .then(data => {
-      console.log('What the hell is this?', data); 
       res.json(data);
     })
     .catch(err => {
