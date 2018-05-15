@@ -31,7 +31,6 @@ module.exports.createHousehold = (req, res, next) => {
 
   Household.create(req.body)
     .then( ({ dataValues }) => {
-      console.log('WHAT HAPPENED??', dataValues); 
       res.status(201).json(dataValues);
     })
     .catch(err => {
@@ -52,7 +51,6 @@ module.exports.createHouseholdMember = (req, res, next) => {
       isAdmin: true
     })
       .then( ({ dataValues }) => {
-        console.log('WHAT HAPPENED?!', dataValues); 
         res.status(201).json(dataValues);
       })
       .catch(err => {
@@ -63,7 +61,14 @@ module.exports.createHouseholdMember = (req, res, next) => {
       household_id: req.body.household_id,
       user_id: req.body.user_id,
       isAdmin: false
-    });
+    })
+      .then( ({ dataValues }) => {
+        console.log('WHAT HAPPENED?!', dataValues); 
+        res.status(201).json(dataValues);
+      })
+      .catch(err => {
+        next(err);
+      });
   }
 
 

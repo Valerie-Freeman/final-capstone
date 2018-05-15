@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("TaskApp").controller("HouseholdsCtrl", function($scope, HouseholdFactory, $location) {
+angular.module("TaskApp").controller("HouseholdsCtrl", function($scope, HouseholdFactory) {
   $scope.message = "A list of all your households";
   
   HouseholdFactory.getUserHouseholds()
@@ -11,9 +11,5 @@ angular.module("TaskApp").controller("HouseholdsCtrl", function($scope, Househol
     .catch(error => {
       console.log('ERROR brodcasted in ng controller', error); 
     });
-
-  $scope.addNewHousehold = () => {
-    $location.path('/newhousehold');
-  };
 
 });
