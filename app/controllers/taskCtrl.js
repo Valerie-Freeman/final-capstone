@@ -36,13 +36,13 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
                   // Find the latest date
                   for (let i = 0; i < userTasks.length; i++) {
                     if (i === 0 || moment(userTasks[i].createdAt).isAfter(userTasks[i - 1])) {
-                      latest = userTasks[0];
+                      latest = userTasks[0].createdAt;
                     }
                   }
                   let displayDate = moment(latest).add(task.dataValues.repeat, 'days'); // This is the day the task should reapear on the taskList
-                  // Check if current date is same or after the display date
+                  // Check if current date is same or after the display date 
                   /***** Place a future fake date in here for testing *****/
-                  if (moment('2018-05-21').isSameOrAfter(displayDate, 'day')) {
+                  if (moment().isSameOrAfter(displayDate, 'day')) {
                     resolve(task.dataValues);
                   } else {
                     resolve(null);
