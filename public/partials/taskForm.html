@@ -1,4 +1,4 @@
-<h1>{{message}}</h1>
+<h2>Create a new task</h2>
 
 <form>
   <div class="form-group">
@@ -26,3 +26,12 @@
   
   <button ng-click="createNewTask()" class="btn btn-warning">Create</button>
 </form>
+
+<h2>Or select an existing one</h2>
+
+<label for="task">Choose a past completed task</label>
+<select ng-model="taskId" name="task">
+  <option ng-repeat="task in completedTasks" ng-value="task.id">{{task.title}}</option>
+</select>
+
+<button ng-click="makeNew()" class="btn btn-warning">Readd task</button>

@@ -39,4 +39,12 @@ angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routePara
   $scope.toTaskForm = () => {
     $location.path(`/newtask/${$routeParams.id}`);
   };
+
+  $scope.toLeaderboard = () => {
+    $location.path(`/leaderboard/${$routeParams.id}`);
+  };
+
+  $scope.toStatsPage = () => {
+    $location.path(`/stats/${$routeParams.id}`);
+  };
 });
