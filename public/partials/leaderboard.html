@@ -1,1 +1,48 @@
-<div>{{test}}</div>
+<ul class="collapsible" data-collapsible="accordion">
+  <li>
+    <div class="collapsible-header active"><i class="material-icons">grade</i>Leaderboard</div>
+    <div class="collapsible-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Rank</th>
+            <th>Level</th>
+            <th>Tasks</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="member in leaderboardData | orderBy: '-points'">
+            <td>{{member.username}}</td>
+            <td>{{member.title}}</td>
+            <td>{{member.level}}</td>
+            <td>{{member.tasks}}</td>
+            <td>{{member.points}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header"><i class="material-icons">insert_invitation</i>This month</div>
+    <div class="collapsible-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Tasks</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="member in leaderboardData | orderBy: '-points'">
+            <td>{{member.username}}</td>
+            <td>{{member.monthTasks}}</td>
+            <td>{{member.monthPoints}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </li>
+</ul>

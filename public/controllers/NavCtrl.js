@@ -13,4 +13,5 @@ angular.module("TaskApp").controller("NavCtrl", function($scope, AuthFactory, $l
         console.log('ERROR', error); 
       });
   };
+  
 });

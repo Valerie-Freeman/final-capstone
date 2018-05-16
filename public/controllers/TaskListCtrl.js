@@ -47,4 +47,12 @@ angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routePara
   $scope.toStatsPage = () => {
     $location.path(`/stats/${$routeParams.id}`);
   };
+
+  // Initialize collapse button
+  $(".button-collapse").sideNav({
+    edge: 'right',
+    closeOnClick: true
+  });
+  // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+  $('.collapsible').collapsible();
 });

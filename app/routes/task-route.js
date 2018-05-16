@@ -10,7 +10,8 @@ const {
   createUserTask,
   updateTask,
   getCompletedTasks,
-  getLeaderboardData
+  getLeaderboardData,
+  getStatsData
 } = require("../controllers/taskCtrl");
 
 router.post('/newtask', createTask);
@@ -20,5 +21,6 @@ router.get('/task', getOneTask);
 router.post('/usertask', createUserTask);
 router.patch('/task', updateTask);
 router.get('/leaderboard', getLeaderboardData);
+router.get('/stats', getStatsData);
 
 module.exports = router;

@@ -11,4 +11,11 @@ angular.module("TaskApp").controller("LeaderboardCtrl", function($scope, $routeP
     .catch(error => {
       console.log('error', error); 
     });
+
+  setTimeout(function(){ 
+    $(document).ready(function(){
+      $('.collapsible').collapsible();
+    });
+  }, 450);
+
 });

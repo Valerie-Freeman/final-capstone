@@ -1,5 +1,6 @@
 'use strict';
 const moment = require('moment');
+const sequelize = require('sequelize');
 
 /*********************** HELPER FUNCITONS **********************/
 // Get all user_task relationships for task
@@ -20,8 +21,8 @@ let getUserTasksByUserId = (req, res, next, userId, householdId) => {
   return User_Task.findAll({
     where: { user_id: userId },
     include: [{
-      model: Task, 
-      where: { household_id: householdId}
+      model: Task,
+      where: { household_id: householdId }
     }]
   });
 };
@@ -32,7 +33,7 @@ let getMembers = (req, res, next, householdId) => {
   const { User } = req.app.get('models');
 
   return Household_Member.findAll({
-    where: {household_id: householdId},
+    where: { household_id: householdId },
     include: [{
       model: User
     }]
@@ -73,7 +74,7 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
                   // Find the latest date
                   for (let i = 0; i < userTasks.length; i++) {
                     if (i === 0 || moment(userTasks[i].createdAt).isAfter(userTasks[i - 1])) {
-                      latest = userTasks[0].createdAt;
+                      latest = userTasks[i].createdAt;
                     }
                   }
                   let displayDate = moment(latest).add(task.dataValues.repeat, 'days'); // This is the day the task should reapear on the taskList
@@ -91,16 +92,15 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
       });
       Promise.all(promArr)
         .then(tasks => {
-          console.log('The tasks??', tasks); 
           tasks.forEach(task => {
-            if(task !== null) {
+            if (task !== null) {
               taskList.push(task);
             }
           });
           res.json(taskList);
         })
         .catch(message => {
-          console.log(message); 
+          console.log(message);
         });
     })
     .catch(err => {
@@ -110,7 +110,7 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
 
 
 // Get all tasks that have been completed and not set to repeat
-module.exports.getCompletedTasks = ({app, query: { household }}, res, next) => {
+module.exports.getCompletedTasks = ({ app, query: { household } }, res, next) => {
   const { Task } = app.get('models');
 
   Task.findAll({
@@ -121,7 +121,7 @@ module.exports.getCompletedTasks = ({app, query: { household }}, res, next) => {
     },
     raw: true
   })
-    .then(tasks => { 
+    .then(tasks => {
       res.json(tasks);
     })
     .catch(err => {
@@ -143,7 +143,7 @@ module.exports.createTask = (req, res, next) => {
 };
 
 // Set is_new on a task to either true or false
-module.exports.updateTask = ({ app, body: { taskId, bool }}, res, next) => {
+module.exports.updateTask = ({ app, body: { taskId, bool } }, res, next) => {
   const { Task } = app.get('models');
 
   Task.update(
@@ -187,7 +187,7 @@ module.exports.createUserTask = (req, res, next) => {
     });
 };
 
-
+// Get the ranks and points for all the members of a household
 module.exports.getLeaderboardData = (req, res, next) => {
   let promArr = [];
   getMembers(req, res, next, req.query.household)
@@ -205,19 +205,19 @@ module.exports.getLeaderboardData = (req, res, next) => {
                 let monthPoints = 0;
                 let monthTasks = 0;
                 // Add all points earned and tasks completed
-                completedTasks.forEach(completedTask => { 
+                completedTasks.forEach(completedTask => {
                   tasks++;
                   points += completedTask.dataValues.Task.dataValues.value;
                   // Get the points and tasks for the month
-                  if(moment().isSame(completedTask.dataValues.createdAt, 'month')) {
+                  if (moment().isSame(completedTask.dataValues.createdAt, 'month')) {
                     monthPoints += completedTask.dataValues.Task.dataValues.value;
-                    monthTasks ++;
+                    monthTasks++;
                   }
                 });
                 getRanks(req, res, next)
-                  .then(ranks => { 
+                  .then(ranks => {
                     ranks.forEach(rank => {
-                      if(points >= rank.min && points <= rank.max) {
+                      if (points >= rank.min && points <= rank.max) {
                         title = rank.title;
                         level = rank.id;
                       }
@@ -246,3 +246,63 @@ module.exports.getLeaderboardData = (req, res, next) => {
       next(err);
     });
 };
+
+// Get the statistical data for a household
+module.exports.getStatsData = (req, res, next) => {
+  const { User_Task } = req.app.get('models');
+  const { Task } = req.app.get('models');
+  const { User } = req.app.get('models');
+
+  /**** Counting the tasks overall for household ****/
+  User_Task.findAll({
+    attributes: [[sequelize.fn('COUNT', sequelize.col('Task.id')), 'count'], 'task_id'],
+    group: ['User_Task.task_id', 'Task.id'],
+    include: [
+      {
+        model: Task,
+        attributes: ['title'],
+        where: { household_id: req.query.household }
+      }
+    ]
+  })
+    .then(userTasksTotal => {
+      /**** Counting the tasks for users *****/
+      User_Task.findAll({
+        attributes: [[sequelize.fn('COUNT', sequelize.col('Task.id')), 'count'], 'user_id', 'task_id'],
+        group: ['User_Task.task_id', 'Task.id', 'User_Task.user_id', 'User.id'],
+        include: [
+          {
+            model: Task,
+            attributes: ['title'],
+            where: { household_id: req.query.household }
+          },
+          {
+            model: User,
+            attributes: [ 'username' ]
+          }
+        ]
+      })
+        .then(userTasksCount => {
+          let statsArr = [];
+          // Compare the Totals and the Counts
+          for(let i = 0; i < userTasksTotal.length; i++){
+            statsArr.push({
+              task: userTasksTotal[i].dataValues.Task.dataValues.title,
+              completed: userTasksTotal[i].dataValues.count,
+              members: []
+            });
+            userTasksCount.forEach(taskCount => {
+              if(taskCount.dataValues.task_id === userTasksTotal[i].dataValues.task_id) {
+                statsArr[i].members.push({
+                  username: taskCount.dataValues.User.dataValues.username,
+                  completions: taskCount.dataValues.count
+                });
+              }
+            });
+          }
+          res.json(statsArr);
+        });
+    });
+};
+
+
