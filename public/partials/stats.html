@@ -1,1 +1,25 @@
-<div>{{test}}</div>
+
+<table class="highlight">
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th class="right">Times completed</th>
+    </tr>
+  </thead>
+</table>
+<ul class="collapsible" data-collapsible="accordion">
+  <li ng-repeat="task in statData | orderBy: '-+completed'">
+    <div class="collapsible-header">
+      <td>{{task.task}}:</td>
+      <td class="right">{{task.completed}}</td>
+    </div>
+    <div class="collapsible-body">
+      <div ng-repeat="member in task.members | orderBy: '-+completions'">
+        <td>{{member.username}}:</td>
+        <td>{{member.completions}}</td>
+      </div>
+    </div>
+  </li>
+</ul>
+
+          

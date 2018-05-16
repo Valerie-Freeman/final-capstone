@@ -5,10 +5,15 @@ angular.module("TaskApp").controller("StatsCtrl", function($scope, $routeParams,
 
   StatFactory.getStatData($routeParams.householdId)
     .then( ({data}) => {
+      $scope.statData = data;
       console.log('data', data); 
     })
     .catch(error => {
       console.log('Error', error); 
     });
 
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+        
 });
