@@ -1,13 +1,21 @@
-body {
-  background: rgb(156, 152, 152);
+
+// Login and Rgister Page
+.auth-welcome {
+  margin-left: 1.5em;
+  text-align: left;
+  h3 {
+    margin-bottom: 0;
+  }
+  p {
+    font-size: 1.5em;
+    margin-top: 0;
+  }
 }
 
-.navbar {
-  background: whitesmoke;
-  display: flex;
-  justify-content: space-around;
-}
+.auth-form {
+  text-align: center;
 
-.userList {
-  border: 1px solid black;
+  .auth-btn {
+    width: 85%;
+  }
 }
