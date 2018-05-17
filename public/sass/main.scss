@@ -12,10 +12,14 @@
   }
 }
 
-.auth-form {
+// Forms
+.form-container {
+  text-align: center;
+}
+.form {
   text-align: center;
 
-  .auth-btn {
+  .action-btn {
     width: 85%;
   }
 }
@@ -72,4 +76,18 @@
 }
 .add-new-title {
   padding-top: 1.3em;
+}
+
+// back button
+.back-btn-container {
+  margin-left: 1em;
+  margin-top: 1em;
+  i {
+    border: solid 1px gray;
+    padding: .3em;
+    font-size: 1.5em;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px lightgrey;
+    color: black;
+  }
 }

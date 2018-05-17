@@ -11,14 +11,13 @@ angular.module("TaskApp").controller("TaskFormCtrl", function($scope, $location,
     .then( ({data}) => {
       console.log('Final result!', data); 
       $scope.completedTasks = data;
-      console.log($scope.completedTasks ); 
+      console.log("does it codfjkalsdfj", $scope.completedTasks ); 
     })
     .catch(error => {
       console.log('error', error); 
     });
 
   $scope.createNewTask = () => { 
-    console.log('The task', $scope.task); 
     TaskFactory.createTask($scope.task)
       .then( ({ data }) => {
         console.log('YO', data); 
@@ -41,5 +40,13 @@ angular.module("TaskApp").controller("TaskFormCtrl", function($scope, $location,
       });
   };
 
+  $scope.toTaskList = () => {
+    $location.path(`/households/${$routeParams.householdId}`);
+  };
+  
+  // Select dropdown
+  $(document).ready(function() {
+    $('select').material_select();
+  });
 
 });

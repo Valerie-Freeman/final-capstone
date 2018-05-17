@@ -80,7 +80,7 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
                   let displayDate = moment(latest).add(task.dataValues.repeat, 'days'); // This is the day the task should reapear on the taskList
                   // Check if current date is same or after the display date 
                   /***** Place a future fake date in here for testing *****/
-                  if (moment('2018-05-17').isSameOrAfter(displayDate, 'day')) {
+                  if (moment().isSameOrAfter(displayDate, 'day')) {
                     resolve(task.dataValues);
                   } else {
                     resolve(null);
