@@ -19,5 +19,8 @@ angular.module("TaskApp").controller("HouseholdFormCtrl", function($scope, House
       });
   };
 
+  $scope.toHouseholdList = () => {
+    $location.path('/households');
+  };
 });
   
