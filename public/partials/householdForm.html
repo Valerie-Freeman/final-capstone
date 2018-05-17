@@ -1,22 +1,38 @@
-<div>{{message}}</div>
-
-<form>
-  <div class="form-group">
-    <label for="title">Household Name</label>
-    <input ng-model="household.title" type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Apartment">
-  </div>
-  <div class="form-group">
-    <label for="image">Image URL</label>
-    <input ng-model="household.image" type="text" class="form-control" id="image" placeholder="paste an image url">
-  </div>
-  <button ng-click="createNewHousehold()" class="btn btn-warning">Create</button>
-</form>
-
-
-<div class="household-container" id="preview">
-  <div class="card household-card">
-    <img src={{household.image}}>
+<div class="back-btn-container">
+  <a ng-click="toHouseholdList()" class="back-btn"><i class="material-icons">arrow_back</i></a>
+</div>
+<div class="form-container">
+  <h3>New Household</h3>
+  <div class="row">
+    <form class="col s12 form">
+      <div class="row">
+        <div class="input-field col s12">
+          <input ng-model="household.title" type="text" class="validate" id="title">
+          <label for="title">Household Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input ng-model="household.image" type="text" class="validate" id="image">
+          <label for="image">Image URL</label>
+        </div>
+      </div>
+      <a ng-click="createNewHousehold()" class="waves-effect waves-light btn action-btn">Create</a>
+    </form>
   </div>
 </div>
 
-<!-- ng-show="user.name == userSearch || user.username == userSearch || user.email == userSearch" -->
+<span>Preview:</span>
+
+<div id="household-list" class="row">
+  <div class="col s12">
+    <a>
+      <div class="card-panel z-depth-4 household-card">
+        <img src={{household.image}} alt="" class="circle">
+        <div class="household-title">
+          <span>{{household.title}}</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

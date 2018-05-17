@@ -4,6 +4,14 @@ angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routePara
   $scope.message = 'Hey, welcome to the task list of the household you clicked on';
   console.log('Route param', $routeParams.id); 
 
+  HouseholdFactory.getHousehold($routeParams.id)
+    .then( ({data}) => {
+      $scope.household = data;
+    })
+    .catch(error => {
+      console.log('ERROR', error); 
+    });
+
   UserFactory.getAllUsers()
     .then( ({ data }) => {
       $scope.users = data;
@@ -39,4 +47,20 @@ angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routePara
   $scope.toTaskForm = () => {
     $location.path(`/newtask/${$routeParams.id}`);
   };
+
+  $scope.toLeaderboard = () => {
+    $location.path(`/leaderboard/${$routeParams.id}`);
+  };
+
+  $scope.toStatsPage = () => {
+    $location.path(`/stats/${$routeParams.id}`);
+  };
+
+  // Initialize collapse button
+  $(".button-collapse").sideNav({
+    edge: 'right',
+    closeOnClick: true
+  });
+  // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+  $('.collapsible').collapsible();
 });

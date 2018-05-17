@@ -1,23 +1,20 @@
-<div>{{message}}</div>
 
-<div id="householdList">
-  <a ng-repeat="item in userHouseholds" href="#!/households/{{item.Household.id}}">
-    <div class="household-container">
-      <div class="card household-card">
-        <div class="card-body">
-          {{item.Household.title}}
+<div id="household-list" class="row">
+  <div ng-repeat="item in userHouseholds" class="col s12">
+    <a href="#!/households/{{item.Household.id}}">
+      <div class="card-panel z-depth-4 household-card">
+        <img src={{item.Household.image}} alt="" class="circle">
+        <div class="household-title">
+          <span>{{item.Household.title}}</span>
         </div>
       </div>
-    </div>
-  </a>
-  
-  <a href="#!/newhousehold">
-    <div class="household-container">
-      <div class="card add-new-card">
-        <div class="card-body">
-          Create new household...
-        </div>
+    </a>
+  </div>
+  <div class="col s12">
+    <a href="#!/newhousehold">
+      <div class="card-panel z-depth-4 household-card">
+        <span>Create new household...</span>
       </div>
-    </div>
-  </a>
+    </a>
+  </div>
 </div>

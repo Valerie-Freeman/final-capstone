@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("TaskApp").controller("RegisterCtrl", function($scope, AuthFactory, $location) {
+angular.module("TaskApp").controller("RegisterCtrl", function($scope, $rootScope, AuthFactory, $location) {
   $scope.message = "The Register Page!";
   $scope.user = {};
 
@@ -9,7 +9,9 @@ angular.module("TaskApp").controller("RegisterCtrl", function($scope, AuthFactor
       console.log('What are you?', $scope.user); 
       AuthFactory.createUser($scope.user)
         .then(user => {
-          console.log('the user:', user); 
+          console.log('the user:', user);
+          $rootScope.checkIfUser(); 
+          console.log('User?', $rootScope.user); 
           $location.path("/households");
         });
     } else {

@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module("TaskApp").controller("HouseholdsCtrl", function($scope, HouseholdFactory) {
-  $scope.message = "A list of all your households";
   
   HouseholdFactory.getUserHouseholds()
     .then(response => {

@@ -1,9 +1,10 @@
 'use strict';
 const moment = require('moment');
+const sequelize = require('sequelize');
 
-// TODO: Go back and change everything to raw: true you idiot
-
-let getUserTasksByUserId = (req, res, next, taskId) => {
+/*********************** HELPER FUNCITONS **********************/
+// Get all user_task relationships for task
+let getUserTasksByTaskId = (req, res, next, taskId) => {
   const { User_Task } = req.app.get('models');
 
   return User_Task.findAll({
@@ -12,7 +13,44 @@ let getUserTasksByUserId = (req, res, next, taskId) => {
   });
 };
 
+// Get all user_task relationships for one user on one household
+let getUserTasksByUserId = (req, res, next, userId, householdId) => {
+  const { User_Task } = req.app.get('models');
+  const { Task } = req.app.get('models');
 
+  return User_Task.findAll({
+    where: { user_id: userId },
+    include: [{
+      model: Task,
+      where: { household_id: householdId }
+    }]
+  });
+};
+
+// Get all mumbers on a household
+let getMembers = (req, res, next, householdId) => {
+  const { Household_Member } = req.app.get('models');
+  const { User } = req.app.get('models');
+
+  return Household_Member.findAll({
+    where: { household_id: householdId },
+    include: [{
+      model: User
+    }]
+  });
+};
+
+// Get all of the ranks
+let getRanks = (req, res, next) => {
+  const { Rank } = req.app.get('models');
+
+  return Rank.findAll({
+    raw: true
+  });
+};
+/**************************************************************/
+
+// Get all the current tasks for a household
 module.exports.getAllHouseholdTasks = (req, res, next) => {
   const { Task } = req.app.get('models');
   let taskList = []; // This will be the array of current tasks sent to the client
@@ -30,13 +68,13 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
         } else if (task.dataValues.repeat !== 0) { // If the task is not new, but has been chosen to repeat 
           promArr.push(
             new Promise((resolve, reject) => {
-              getUserTasksByUserId(req, res, next, task.dataValues.id)
+              getUserTasksByTaskId(req, res, next, task.dataValues.id)
                 .then(userTasks => {
                   let latest = null; // This will be the latest created user_task date
                   // Find the latest date
                   for (let i = 0; i < userTasks.length; i++) {
                     if (i === 0 || moment(userTasks[i].createdAt).isAfter(userTasks[i - 1])) {
-                      latest = userTasks[0].createdAt;
+                      latest = userTasks[i].createdAt;
                     }
                   }
                   let displayDate = moment(latest).add(task.dataValues.repeat, 'days'); // This is the day the task should reapear on the taskList
@@ -54,16 +92,15 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
       });
       Promise.all(promArr)
         .then(tasks => {
-          console.log('The tasks??', tasks); 
           tasks.forEach(task => {
-            if(task !== null) {
+            if (task !== null) {
               taskList.push(task);
             }
           });
           res.json(taskList);
         })
         .catch(message => {
-          console.log(message); 
+          console.log(message);
         });
     })
     .catch(err => {
@@ -72,6 +109,27 @@ module.exports.getAllHouseholdTasks = (req, res, next) => {
 };
 
 
+// Get all tasks that have been completed and not set to repeat
+module.exports.getCompletedTasks = ({ app, query: { household } }, res, next) => {
+  const { Task } = app.get('models');
+
+  Task.findAll({
+    where: {
+      household_id: household,
+      is_new: false,
+      repeat: 0
+    },
+    raw: true
+  })
+    .then(tasks => {
+      res.json(tasks);
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
+// Create a new task
 module.exports.createTask = (req, res, next) => {
   const { Task } = req.app.get('models');
 
@@ -84,13 +142,13 @@ module.exports.createTask = (req, res, next) => {
     });
 };
 
-
-module.exports.updateTask = (req, res, next) => {
-  const { Task } = req.app.get('models');
+// Set is_new on a task to either true or false
+module.exports.updateTask = ({ app, body: { taskId, bool } }, res, next) => {
+  const { Task } = app.get('models');
 
   Task.update(
-    { is_new: false },
-    { where: { id: req.body.taskId } }
+    { is_new: bool },
+    { where: { id: taskId } }
   )
     .then(({ dataValues }) => {
       res.json(dataValues);
@@ -100,7 +158,7 @@ module.exports.updateTask = (req, res, next) => {
     });
 };
 
-
+// Get one task by its id
 module.exports.getOneTask = (req, res, next) => {
   const { Task } = req.app.get('models');
 
@@ -113,7 +171,7 @@ module.exports.getOneTask = (req, res, next) => {
     });
 };
 
-
+// Create a new user_task relationship
 module.exports.createUserTask = (req, res, next) => {
   const { User_Task } = req.app.get('models');
 
@@ -128,3 +186,123 @@ module.exports.createUserTask = (req, res, next) => {
       next(err);
     });
 };
+
+// Get the ranks and points for all the members of a household
+module.exports.getLeaderboardData = (req, res, next) => {
+  let promArr = [];
+  getMembers(req, res, next, req.query.household)
+    .then(members => {
+      members.forEach(member => {
+        promArr.push(
+          new Promise((resolve, reject) => {
+            getUserTasksByUserId(req, res, next, member.user_id, req.query.household)
+              .then(completedTasks => {
+                let points = 0;
+                let tasks = 0;
+                let title = null;
+                let level = 0;
+                let is_current = member.dataValues.user_id === req.user.id ? true : false;
+                let monthPoints = 0;
+                let monthTasks = 0;
+                // Add all points earned and tasks completed
+                completedTasks.forEach(completedTask => {
+                  tasks++;
+                  points += completedTask.dataValues.Task.dataValues.value;
+                  // Get the points and tasks for the month
+                  if (moment().isSame(completedTask.dataValues.createdAt, 'month')) {
+                    monthPoints += completedTask.dataValues.Task.dataValues.value;
+                    monthTasks++;
+                  }
+                });
+                getRanks(req, res, next)
+                  .then(ranks => {
+                    ranks.forEach(rank => {
+                      if (points >= rank.min && points <= rank.max) {
+                        title = rank.title;
+                        level = rank.id;
+                      }
+                    });
+                    resolve({
+                      username: member.dataValues.User.dataValues.username,
+                      points,
+                      title,
+                      level,
+                      tasks,
+                      is_current,
+                      monthPoints,
+                      monthTasks
+                    });
+                  });
+              });
+          })
+        );
+      });
+      return Promise.all(promArr);
+    })
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
+// Get the statistical data for a household
+module.exports.getStatsData = (req, res, next) => {
+  const { User_Task } = req.app.get('models');
+  const { Task } = req.app.get('models');
+  const { User } = req.app.get('models');
+
+  /**** Counting the tasks overall for household ****/
+  User_Task.findAll({
+    attributes: [[sequelize.fn('COUNT', sequelize.col('Task.id')), 'count'], 'task_id'],
+    group: ['User_Task.task_id', 'Task.id'],
+    include: [
+      {
+        model: Task,
+        attributes: ['title'],
+        where: { household_id: req.query.household }
+      }
+    ]
+  })
+    .then(userTasksTotal => {
+      /**** Counting the tasks for users *****/
+      User_Task.findAll({
+        attributes: [[sequelize.fn('COUNT', sequelize.col('Task.id')), 'count'], 'user_id', 'task_id'],
+        group: ['User_Task.task_id', 'Task.id', 'User_Task.user_id', 'User.id'],
+        include: [
+          {
+            model: Task,
+            attributes: ['title'],
+            where: { household_id: req.query.household }
+          },
+          {
+            model: User,
+            attributes: [ 'username' ]
+          }
+        ]
+      })
+        .then(userTasksCount => {
+          let statsArr = [];
+          // Compare the Totals and the Counts
+          for(let i = 0; i < userTasksTotal.length; i++){
+            statsArr.push({
+              task: userTasksTotal[i].dataValues.Task.dataValues.title,
+              completed: userTasksTotal[i].dataValues.count,
+              members: []
+            });
+            userTasksCount.forEach(taskCount => {
+              if(taskCount.dataValues.task_id === userTasksTotal[i].dataValues.task_id) {
+                statsArr[i].members.push({
+                  username: taskCount.dataValues.User.dataValues.username,
+                  completions: taskCount.dataValues.count
+                });
+              }
+            });
+          }
+          res.json(statsArr);
+        });
+    });
+};
+
+

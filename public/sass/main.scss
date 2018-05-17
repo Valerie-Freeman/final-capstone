@@ -1,13 +1,93 @@
-body {
-  background: rgb(156, 152, 152);
+
+// Login and Rgister Page
+.auth-welcome {
+  margin-left: 1.5em;
+  text-align: left;
+  h3 {
+    margin-bottom: 0;
+  }
+  p {
+    font-size: 1.5em;
+    margin-top: 0;
+  }
 }
 
-.navbar {
-  background: whitesmoke;
+// Forms
+.form-container {
+  text-align: center;
+}
+.form {
+  text-align: center;
+
+  .action-btn {
+    width: 85%;
+  }
+}
+
+// Household list
+#household-list {
+  .household-card {
+    display: flex;
+    border-radius: 6px;
+    img {
+      height: 3em;
+      width: 3em;
+    }
+    .household-title {
+      margin: auto;
+      margin-left: 2em;
+      font-size: 1.2em;
+    }
+  }
+}
+
+// Task List
+#task-list-header {
   display: flex;
-  justify-content: space-around;
+  padding-left: 2em;
+  justify-content: space-between;
+  #menu-btn {
+    margin: auto;
+    i {
+      font-size: 3em;
+      margin-top: .3em;
+      color: darkgray;
+      margin-left: 1em;
+    }
+  }
 }
 
-.userList {
-  border: 1px solid black;
+.task-icon {
+  margin-top: 0.5em;
+}
+.title {
+  padding-top: .3em;
+}
+.point-icon {
+  margin-right: .8em;
+  color: #f6c001
+}
+.points {
+  padding-top: 0.2em;
+  color: #f6c001;
+}
+.add-icon {
+  margin-top: .5em;
+}
+.add-new-title {
+  padding-top: 1.3em;
+}
+
+// back button
+.back-btn-container {
+  margin-left: 1em;
+  margin-top: 1em;
+  i {
+    border: solid 1px gray;
+    padding: .3em;
+    font-size: 1.5em;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px lightgrey;
+    color: black;
+  }
 }

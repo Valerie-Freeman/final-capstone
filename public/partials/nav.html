@@ -1,11 +1,15 @@
-<nav ng-controller="NavCtrl" class="navbar navbar-expand navbar-light bg-light">
-    <a class="navbar-brand" href="#!/households">App</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-nav">
-      <a class="nav-item nav-link" href="#!/register">Register</a>
-      <a class="nav-item nav-link" href="#!/login">Log in</a>
-      <a class="nav-item nav-link" ng-click="logout()">Logout</a>
-    </div>
-  </nav>
+<nav class="brown lighten-4" ng-controller="NavCtrl">
+  <div class="nav-wrapper">
+    <a class="brand-logo left" href="#!/households">ChoreWars</a>
+    <ul class="right">
+      <li ng-show="!user"><a href="#!/register">Register</a></li>
+      <li ng-show="!user"><a href="#!/login">Log in</a></li>
+      <li ng-show="user"><a ng-click="logout()">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+          
+
+
+          

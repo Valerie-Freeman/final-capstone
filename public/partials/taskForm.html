@@ -1,28 +1,62 @@
-<h1>{{message}}</h1>
-
-<form>
-  <div class="form-group">
-    <label for="title">Task</label>
-    <input ng-model="task.title" type="text" class="form-control" id="title" placeholder="Wash Dishes">
-  </div>
-  <div class="form-group">
-    <label for="description">Task Description</label>
-    <input ng-model="task.description" type="text" class="form-control" id="description" placeholder="Describe task">
-  </div>
-  <div class="form-group">
-    <label for="value">Point value (1 - 20)</label>
-    <input ng-model="task.value" type="number" min="1" max="20" class="form-control" id="value">
-  </div>
-  <div class="form-group">
-    <label for="repeat">How often will you complete this task?</label>
-    <select ng-model="task.repeat" name="repeat">
-      <option ng-value="0" ng-selected="true">once</option>
-      <option ng-value="1">every day</option>
-      <option ng-value="2">every other day</option>
-      <option ng-value="7">once a week</option>
-      <option ng-value="30">once a month</option>
-    </select>
+<div class="back-btn-container">
+  <a ng-click="toTaskList()" class="back-btn"><i class="material-icons">arrow_back</i></a>
+</div>
+<div class="form-container">
+  <h3>Create a new task</h3>
+  <div class="row">
+    <form class="col s12 form">
+      <div class="row">
+        <div class="input-field col s12">
+          <input ng-model="task.title" type="text" class="validate" id="title">
+          <label for="title">Task</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input ng-model="task.description" type="text" class="validate" id="description">
+          <label for="description">Task Description</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <!-- <input ng-model="task.value" type="number" min="1" max="20" class="form-control" id="value">
+          <label for="value">Point value (1 - 20)</label> -->
+          <label for="point-selection">Point value</label>
+          <p class="range-field">
+            <input ng-model="task.value" type="range" id="point-selection" min="1" max="20" />
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <select ng-model="task.repeat">
+            <option value="" disabled selected>How often will you complete this task?</option>
+            <option value="0">once</option>
+            <option value="1">every day</option>
+            <option value="2">every other day</option>
+            <option value="7">once a week</option>
+            <option value="30">once a month</option>
+          </select>
+        </div>
+      </div>
+      <a ng-click="createNewTask()" class="waves-effect waves-light btn action-btn">Create</a>
+    </form>
   </div>
   
-  <button ng-click="createNewTask()" class="btn btn-warning">Create</button>
-</form>
+  <h3>Or select an existing one</h3>
+  
+  <div class="row">
+    <form class="col s12 form">
+      <div class="input-field col s12">
+        <!-- <label for="task">Choose a past completed task</label> -->
+        <div>
+          <select ng-model="taskId" name="task">
+            <option value="" disabled selected>Choose a past completed task</option>
+            <option ng-repeat="task in completedTasks" ng-value="task.id">{{task.title}}</option>
+          </select>
+        </div>
+      </div>
+      <a ng-click="makeNew()" class="waves-effect waves-light btn action-btn">Readd task</a>
+    </form>
+  </div>
+</div>

@@ -1,33 +1,58 @@
-<div class="form-group">
-  <label for="users">Add Members</label>
-  <input ng-focus="show = true" ng-model="userSearch" class="form-control" id="users" placeholder="Search for current users">
-</div>
-<div ng-show="show" class="userList">
-  <button id="close-btn" ng-focus="show = false">X</button>
-  <ul>
-    <li ng-repeat="user in users | orderBy: name | filter: userSearch | limitTo:3 track by user.id">
-      <a ng-click="addHouseholdMember(user.id)"> {{user.name}} ({{user.username}}) </a>
-    </li>
-  </ul>
-</div>
-
-<div id="task-list">
-  <a ng-repeat="task in taskList" href="#!/task/{{task.id}}">
-    <div class="household-container">
-      <div class="card household-card">
-        <div class="card-body">
-          {{task.title}}  ...{{task.value}}
-        </div>
-      </div>
-    </div>
-  </a>
-
-  <div ng-click="toTaskForm()" class="task-container">
-    <div class="card add-new-card">
-      <div class="card-body">
-        Create new task...
-      </div>
-    </div>
+<!-- Side nav menu -->
+<ul id="slide-out" class="side-nav">
+  <li><div class="user-view">
+  </div></li>
+  <li><div class="form-group">
+    <label for="users">Add Members</label>
+    <input ng-focus="show = true" ng-model="userSearch" class="form-control" id="users" placeholder="Search for current users">
   </div>
+  <div ng-show="show" class="userList">
+    <button id="close-btn" ng-focus="show = false">X</button>
+    <ul>
+      <li ng-repeat="user in users | orderBy: name | filter: userSearch | limitTo:3 track by user.id">
+        <a ng-click="addHouseholdMember(user.id)"> {{user.name}} ({{user.username}}) </a>
+      </li>
+    </ul>
+  </div></li>
+  <li><div class="divider"></div></li>
+  <li><a ng-click="toLeaderboard()"><i class="material-icons">grade</i>Leaderboard</a></li>
+  <li><div class="divider"></div></li>
+  <li><a ng-click="toStatsPage()"><i class="material-icons">assessment</i>Statistics</a></li>
+  <li><div class="divider"></div></li>
+</ul>
 
+<!-- Household title and menu button for side nav -->
+<div id="task-list-header" class="valign-container">
+  <h3>{{household.title}}</h3>
+  <a id="menu-btn" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
 </div>
+
+<!-- Task list -->
+<ul id="task-list" class="collection">
+  <li ng-repeat="task in taskList" class="collection-item avatar task">
+    <div class="task-icon">
+      <a href="#!/task/{{task.id}}"><i class="material-icons circle orange darken-1 z-depth-3">expand_more</i></a>
+    </div>
+    <div>
+      <p class="title">{{task.title}}</p>
+      <p ng-if="task.repeat > 1">Every {{task.repeat}} days</p>
+      <p ng-if="task.repeat == 1">Every day</p>
+      <p ng-if="task.repeat == 0">Once</p>
+      <div class="secondary-content point-display">
+        <span class="secondary-content points">{{task.value}}</span>
+        <a class="secondary-content"><i class="material-icons point-icon">grade</i></a>
+      </div>
+    </div>
+  </li>
+  <!-- Add task -->
+  <li class="collection-item avatar task">
+    <div>
+      <a ng-click="toTaskForm()"><i class="material-icons circle grey darken-1 z-depth-3 add-icon">add</i></a>
+    </div>
+    <div>
+      <p class="title add-new-title">Add new task...</p>
+    </div>
+  </li>
+</ul>
+
+
