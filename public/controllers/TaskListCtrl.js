@@ -4,6 +4,14 @@ angular.module("TaskApp").controller("TaskListCtrl", function($scope, $routePara
   $scope.message = 'Hey, welcome to the task list of the household you clicked on';
   console.log('Route param', $routeParams.id); 
 
+  HouseholdFactory.getHousehold($routeParams.id)
+    .then( ({data}) => {
+      $scope.household = data;
+    })
+    .catch(error => {
+      console.log('ERROR', error); 
+    });
+
   UserFactory.getAllUsers()
     .then( ({ data }) => {
       $scope.users = data;
