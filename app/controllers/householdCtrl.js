@@ -26,6 +26,18 @@ module.exports.getUserHouseholds = (req, res, next) => {
     });
 };
 
+module.exports.getHousehold = (req, res, next) => {
+  const { Household } = req.app.get('models');
+
+  Household.findById(req.query.household)
+    .then(household => {
+      res.json(household);
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
 module.exports.createHousehold = (req, res, next) => {
   const { Household } = req.app.get('models');
 
