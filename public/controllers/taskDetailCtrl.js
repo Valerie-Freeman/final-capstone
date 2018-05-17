@@ -25,4 +25,8 @@ angular.module("TaskApp").controller("TaskDetailCtrl", function($scope, $routePa
         console.log('ERROR', error); 
       });
   };
+
+  $scope.toTaskList = () => {
+    $location.path(`households/${$scope.task.household_id}`);
+  };
 });

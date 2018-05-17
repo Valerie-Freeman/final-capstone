@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("TaskApp").controller("LeaderboardCtrl", function($scope, $routeParams, StatFactory) {
+angular.module("TaskApp").controller("LeaderboardCtrl", function($scope, $routeParams, StatFactory, $location) {
   $scope.test = `this is the leaderboard page of household: ${$routeParams.householdId}`;
 
   StatFactory.getLeaderboardData($routeParams.householdId)
@@ -12,6 +12,10 @@ angular.module("TaskApp").controller("LeaderboardCtrl", function($scope, $routeP
       console.log('error', error); 
     });
 
+  $scope.toTaskList = () => {
+    $location.path(`/households/${$routeParams.householdId}`);
+  };
+  
   setTimeout(function(){ 
     $(document).ready(function(){
       $('.collapsible').collapsible();

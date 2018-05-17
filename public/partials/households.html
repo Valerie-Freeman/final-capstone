@@ -3,7 +3,7 @@
   <div ng-repeat="item in userHouseholds" class="col s12">
     <a href="#!/households/{{item.Household.id}}">
       <div class="card-panel z-depth-4 household-card">
-        <img src="{{item.Household.image}}" alt="" class="circle">
+        <img src={{item.Household.image}} alt="" class="circle">
         <div class="household-title">
           <span>{{item.Household.title}}</span>
         </div>
