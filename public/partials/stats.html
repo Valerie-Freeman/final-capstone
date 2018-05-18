@@ -14,6 +14,7 @@
     <div class="collapsible-header">
       <td>{{task.task}}:</td>
       <td class="right">{{task.completed}}</td>
+      <i class="material-icons expand-icon">expand_more </i>
     </div>
     <div class="collapsible-body">
       <div ng-repeat="member in task.members | orderBy: '-+completions'">

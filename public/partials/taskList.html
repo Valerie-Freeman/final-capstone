@@ -31,7 +31,7 @@
 <ul id="task-list" class="collection">
   <li ng-repeat="task in taskList" class="collection-item avatar task">
     <div class="task-icon">
-      <a href="#!/task/{{task.id}}"><i class="material-icons circle orange darken-1 z-depth-3">expand_more</i></a>
+      <a href="#!/task/{{task.id}}"><i class="material-icons circle teal darken-3 z-depth-3">expand_more</i></a>
     </div>
     <div>
       <p class="title">{{task.title}}</p>
@@ -40,7 +40,7 @@
       <p ng-if="task.repeat == 0">Once</p>
       <div class="secondary-content point-display">
         <span class="secondary-content points">{{task.value}}</span>
-        <a class="secondary-content"><i class="material-icons point-icon">grade</i></a>
+        <a class="secondary-content"><i class="material-icons point-icon">stars</i></a>
       </div>
     </div>
   </li>
@@ -54,5 +54,4 @@
     </div>
   </li>
 </ul>
-
 
