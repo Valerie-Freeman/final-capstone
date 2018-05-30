@@ -2,13 +2,31 @@
   <a ng-click="toTaskList()" class="back-btn"><i class="material-icons">arrow_back</i></a>
 </div>
 
-<h2>{{task.title}}</h2>
-
-<p>{{task.description}}</p>
-
-<p ng-show="task.repeat > 1">Repeat every {{task.repeat}} days.</p>
-<p ng-show="task.repeat === 1">Repeat every day</p>
-
-<p>Points: {{task.value}}</p>
-
-<button ng-click="complete(task.id)">Complete</button>
+<div id="task-detail" class="row">
+  <div class="col s12">
+    <div class="row">
+      <div class="col s12">
+        <h2>{{task.title}}</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <p class="task-description">{{task.description}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6">
+        <p class="task-repeat" ng-show="task.repeat > 1">Repeat every {{task.repeat}} days.</p>
+        <p class="task-repeat" ng-show="task.repeat === 1">Repeat every day</p>
+      </div>
+      <div class="col s6 point-wrapper">
+        <span><i class="material-icons point-icon">stars</i></span>
+        <div>
+          <span class="task-points">Points: {{task.value}}</span>
+        </div>
+      </div>
+    </div>
+    <!-- <button ng-click="complete(task.id)">Complete</button> -->
+    <a ng-click="complete(task.id)" class="waves-effect waves-light btn"><i class="material-icons left">check</i>Complete</a>
+  </div>
+</div>

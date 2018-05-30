@@ -7,7 +7,6 @@ angular.module("TaskApp").controller("HouseholdFormCtrl", function($scope, House
   $scope.createNewHousehold = () => { 
     HouseholdFactory.createHousehold($scope.household)
       .then( ({ data }) => {
-        console.log('HERE IT IS!!!!!!!', data);
         return HouseholdFactory.createHouseholdMember({ household_id: data.id });
       })
       .then( ({ data }) => {
